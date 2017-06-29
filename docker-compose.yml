@@ -1,0 +1,22 @@
+version: "3"
+services:
+  db:
+    expose:
+      - "27017"
+    image: mongo
+  meteor:
+    build:
+      context: .
+    command: meteor
+    environment:
+      APP_NAME: "${APP_NAME}"
+      LC_ALL: "C.UTF-8"
+      METEOR_ALLOW_SUPERUSER: "1"
+      MONGO_URL: "mongodb://db:27017/"
+    links:
+      - db
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app:/home/${APP_NAME}
+    working_dir: /home/${APP_NAME}
